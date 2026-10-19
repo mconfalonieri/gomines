@@ -6,5 +6,10 @@ A little minesweeper game written in Go to play around the [BubbleTea](https://c
 
 ## Quickstart
 
-Coming soon...
+For now you need go:
+
+```bash
+$ go install github.com/mconfalonieri/gomines@latest
+```
+
 
