@@ -15,6 +15,7 @@ var (
 	GridNormal  = lipgloss.Style{}
 	GridFocused = lipgloss.Style{}
 	Mine        = lipgloss.Style{}
+	MineOK      = lipgloss.Style{}
 	OneMine     = lipgloss.Style{}
 	TwoMines    = lipgloss.Style{}
 	ThreeMines  = lipgloss.Style{}
@@ -55,6 +56,8 @@ func init() {
 			BorderForeground(tone.Malibu)
 		Mine = lipgloss.NewStyle().
 			Foreground(tone.Citron)
+		MineOK = lipgloss.NewStyle().
+			Foreground(tone.Julep)
 		OneMine = lipgloss.NewStyle().
 			Foreground(tone.Malibu)
 		TwoMines = lipgloss.NewStyle().
@@ -104,6 +107,8 @@ func init() {
 			BorderForeground(tone.Malibu)
 		Mine = lipgloss.NewStyle().
 			Foreground(tone.Cumin)
+		MineOK = lipgloss.NewStyle().
+			Foreground(tone.Guac)
 		OneMine = lipgloss.NewStyle().
 			Foreground(tone.Damson)
 		TwoMines = lipgloss.NewStyle().

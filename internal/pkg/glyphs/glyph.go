@@ -22,15 +22,27 @@ const (
 	SHappy = 13 // Happy status index
 	SDoubt = 14 // Doubt status index
 
+	KeyLeft  = 0
+	KeyDown  = 1
+	KeyUp    = 2
+	KeyRight = 3
+
 	TotGlyphSets = 2  // total number of glyph sets
 	TotGlyphs    = 15 // total number of glyphs per set
+	TotKeyGlyphs = 4  // Number of key glyphs
 )
 
 var (
 	// The glyph sets we support.
 	glyphs = [TotGlyphSets][TotGlyphs]string{
-		ASCII:   {"*", "1", "2", "3", "4", "5", "6", "7", "8", "?", "F", "X", ":-(", ":-)", ":-O"},
+		ASCII:   {"*", "1", "2", "3", "4", "5", "6", "7", "8", "?", "@", "X", ":-(", ":-)", ":-O"},
 		UNICODE: {"✱", "1", "2", "3", "4", "5", "6", "7", "8", "?", "⚑", "✘", "(╥‸╥)", "(^ᴗ^)", "(⊙_⊙)"},
+	}
+
+	// The key glyphs.
+	keyGlyphs = [TotGlyphSets][TotKeyGlyphs]string{
+		ASCII:   {"left", "down", "up", "right"},
+		UNICODE: {"←", "↓", "↑", "→"},
 	}
 
 	// The default set. It can be changed through the SetDefault() function.
@@ -51,11 +63,12 @@ func SetDefault(gs int) error {
 	return nil
 }
 
-// Get returns a single glyph from the default set. If the argument is not
-// supported, an empty string is returned.
+// Get returns a single glyph from the default set.
 func Get(glyph int) string {
-	if glyph < 0 || glyph >= TotGlyphs {
-		return "N"
-	}
 	return glyphs[defaultSet][glyph]
+}
+
+// GetKey returns a key glyph from the default set.
+func GetKey(glyph int) string {
+	return keyGlyphs[defaultSet][glyph]
 }

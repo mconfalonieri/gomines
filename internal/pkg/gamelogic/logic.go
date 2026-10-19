@@ -12,6 +12,7 @@ const (
 	CellMine    = "*"
 	CellEmpty   = " "
 	CellXMarked = "X"
+	CellMineOK  = "W"
 )
 
 type PlayField struct {
@@ -77,6 +78,7 @@ func (p PlayField) addCellsToStack(point xy, s *xyStack) {
 func (p *PlayField) play(x, y int, mark bool) bool {
 	if mark {
 		p.markMine(x, y)
+		p.updateStats()
 		return false
 	} else {
 		v := p.openCell(x, y)
@@ -98,7 +100,7 @@ func (p *PlayField) play(x, y int, mark bool) bool {
 				p.addCellsToStack(point, &s)
 			}
 		}
-		p.updateHiddenCells()
+		p.updateStats()
 	}
 	return false
 }
@@ -106,10 +108,8 @@ func (p *PlayField) play(x, y int, mark bool) bool {
 func (p *PlayField) markMine(x, y int) {
 	if p.VisibleField[x][y] == CellMarked {
 		p.VisibleField[x][y] = CellUnknown
-		p.unmarkedMines++
 	} else if p.unmarkedMines > 0 {
 		p.VisibleField[x][y] = CellMarked
-		p.unmarkedMines--
 	}
 }
 
@@ -160,7 +160,9 @@ func (p PlayField) revealCell(x, y int) {
 		p.VisibleField[x][y] = CellXMarked
 	} else if !marked && mined {
 		p.VisibleField[x][y] = CellMine
-	} else if !marked && !mined {
+	} else if marked && mined {
+		p.VisibleField[x][y] = CellMineOK
+	} else {
 		p.VisibleField[x][y] = CellEmpty
 	}
 }
@@ -175,14 +177,18 @@ func (p *PlayField) RevealCells() {
 	p.unmarkedMines = 0
 }
 
-func (p *PlayField) updateHiddenCells() {
-	hc := p.width*p.height - p.realField.Mines()
+func (p *PlayField) updateStats() {
+	um := p.realField.Mines()
+	hc := p.width*p.height - um
 	for x := range p.VisibleField {
 		for y := range p.VisibleField[x] {
 			if discovered(p.VisibleField[x][y]) {
 				hc--
+			} else if p.VisibleField[x][y] == CellMarked {
+				um--
 			}
 		}
 	}
 	p.hiddenCells = hc
+	p.unmarkedMines = um
 }

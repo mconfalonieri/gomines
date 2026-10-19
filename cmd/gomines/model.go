@@ -11,15 +11,15 @@ import (
 	"github.com/mconfalonieri/gomines/internal/pkg/styles"
 )
 
-type cell string
-
-func rendered(s string) string {
+// render renders a string according to its style.
+func render(s string) string {
 	gmap := map[string]string{
 		gamelogic.CellEmpty:   " ",
 		gamelogic.CellMarked:  styles.CheckMark.Render(glyphs.Get(glyphs.GCheck)),
 		gamelogic.CellUnknown: styles.QMark.Render(glyphs.Get(glyphs.GQMark)),
 		gamelogic.CellXMarked: styles.XMark.Render(glyphs.Get(glyphs.GXMark)),
 		gamelogic.CellMine:    styles.Mine.Render(glyphs.Get(glyphs.GMine)),
+		gamelogic.CellMineOK:  styles.MineOK.Render(glyphs.Get(glyphs.GCheck)),
 		"1":                   styles.OneMine.Render(glyphs.Get(glyphs.GOne)),
 		"2":                   styles.TwoMines.Render(glyphs.Get(glyphs.GTwo)),
 		"3":                   styles.ThreeMines.Render(glyphs.Get(glyphs.GThree)),
@@ -36,14 +36,21 @@ func rendered(s string) string {
 	return g
 }
 
+// cell is used by the grid component.
+type cell string
+
+// Render renders a single cell.
 func (c cell) Render(width, height int, selected bool) string {
+	s := string(c)
 	if selected {
-		return styles.Prompt.Render(">") + rendered(string(c)) + styles.Prompt.Render("<")
+		return styles.Prompt.Render(">") + render(s) + styles.Prompt.Render("<")
 	} else {
-		return " " + rendered(string(c)) + " "
+		return " " + render(s) + " "
 	}
 }
 
+// asGridItems converts a string matrix to a cell matrix, returned as a
+// grid.GridItem matrix.
 func asGridItems(w, h int, f [][]string) [][]grid.GridItem {
 	g := make([][]grid.GridItem, h)
 	for y := range g {
@@ -55,7 +62,7 @@ func asGridItems(w, h int, f [][]string) [][]grid.GridItem {
 	return g
 }
 
-// model represents the model.
+// model represents the ELM model used by BubbleTea.
 type model struct {
 	opts       options
 	dead       bool
@@ -144,7 +151,16 @@ func (m model) footer() string {
 	return fmt.Sprint(
 		"Press ", styles.KeyChar.Render("Esc"), " to exit, ",
 		styles.KeyChar.Render("Enter"), " to show a cell, ",
-		styles.KeyChar.Render("Space"), ", ", styles.KeyChar.Render("F"), ": to mark/unmark a mine.",
+		styles.KeyChar.Render("Space"), ", ", styles.KeyChar.Render("F"),
+		": to mark/unmark a mine.\nMove around using ",
+		styles.KeyChar.Render(glyphs.GetKey(glyphs.KeyLeft)), ", ",
+		styles.KeyChar.Render(glyphs.GetKey(glyphs.KeyDown)), ", ",
+		styles.KeyChar.Render(glyphs.GetKey(glyphs.KeyUp)), ", ",
+		styles.KeyChar.Render(glyphs.GetKey(glyphs.KeyRight)), " or ",
+		styles.KeyChar.Render("h"), ", ",
+		styles.KeyChar.Render("j"), ", ",
+		styles.KeyChar.Render("k"), ", ",
+		styles.KeyChar.Render("l"), ".",
 	)
 }
 
@@ -178,7 +194,7 @@ func (m model) View() tea.View {
 	m.grid.View()
 	gridView := lipgloss.PlaceHorizontal(m.termWidth, lipgloss.Center, m.grid.View())
 	msgView := lipgloss.PlaceHorizontal(m.termWidth, lipgloss.Center, m.Message())
-	mainContent := lipgloss.PlaceVertical(m.termHeight-2, lipgloss.Top, joinRows(m.header(), gridView, msgView))
+	mainContent := lipgloss.PlaceVertical(m.termHeight-3, lipgloss.Top, joinRows(m.header(), gridView, msgView))
 	v := tea.NewView(joinRows(mainContent, m.footer(), m.statusBar()))
 	v.AltScreen = true
 	m.grid.View()

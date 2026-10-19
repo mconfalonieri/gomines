@@ -7,36 +7,51 @@ import (
 	tea "charm.land/bubbletea/v2"
 	"github.com/mconfalonieri/gomines/internal/pkg/glyphs"
 	"github.com/mconfalonieri/gomines/internal/pkg/mybubbles/setup"
+	"github.com/mconfalonieri/gomines/internal/pkg/styles"
 )
 
-func main() {
-	// Run setup
-	s, err := setup.Run()
+// checkError checks if an error occurred. If err is not nil, it prints a
+// message and quits.
+func checkError(err error) {
 	if err != nil {
-		fmt.Printf("Error: %v\n", err)
+		msg := fmt.Sprintf("ERROR: %s", err.Error())
+		fmt.Println(styles.Error.Render(msg))
 		os.Exit(1)
-	} else if s.HasQuit() {
+	}
+}
+
+// runSetup runs the setup routine.
+func runSetup() setup.Options {
+	s, err := setup.Run()
+	checkError(err)
+	if s.HasQuit() {
 		os.Exit(0)
 	}
+	return s
+}
 
-	// Main program
+// runProgram runs the game.
+func runProgram(o options) {
+	run := true
+	for run {
+		m, err := createModel(o)
+		checkError(err)
+		p := tea.NewProgram(m)
+		fm, err := p.Run()
+		checkError(err)
+		run = fm.(model).restart
+	}
+}
+
+func main() {
+	s := runSetup()
+
+	// Set the "font"
 	if err := glyphs.SetDefault(s.GetGlyphSet()); err != nil {
 		glyphs.SetDefault(glyphs.ASCII)
 	}
-	run := true
-	for run {
-		m, err := createModel(fromSetup(s))
-		// m, err := createModel(options{playerName: "Test", width: 10, height: 10, mines: 10})
-		if err != nil {
-			fmt.Printf("Error: %v\n", err)
-			os.Exit(1)
-		}
-		p := tea.NewProgram(m)
-		fm, err := p.Run()
-		if err != nil {
-			fmt.Printf("Error: %v\n", err)
-			os.Exit(1)
-		}
-		run = fm.(model).restart
-	}
+
+	// Run the main program
+	o := fromSetup(s)
+	runProgram(o)
 }

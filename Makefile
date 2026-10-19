@@ -59,6 +59,10 @@ build: ## Build the default binary
 run: build ## Run the binary on local machine
 	build/bin/$(ARTIFACT_NAME)
 
+.PHONY: run-mono
+run-mono: build ## Run the binary on local machine in monochrome mode
+	NO_COLOR=1 build/bin/$(ARTIFACT_NAME)
+
 .PHONY: all
 all: unit-test build ## Run the unit tests and build the binaries
 
