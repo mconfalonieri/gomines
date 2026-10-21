@@ -19,3 +19,15 @@ type field struct {
 	Header         string
 	Check          func(Options, string) error
 }
+
+func (f *field) Focus() {
+	if f.Type == fieldTextInput {
+		f.TextInputModel.Focus()
+	}
+}
+
+func (f *field) Blur() {
+	if f.Type == fieldTextInput {
+		f.TextInputModel.Blur()
+	}
+}

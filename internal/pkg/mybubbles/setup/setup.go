@@ -15,8 +15,7 @@ const (
 
 // initialModel prepares all the fields for the model.
 func initialModel(o *Options) model {
-
-	return model{
+	m := model{
 		opt: o,
 		fields: []field{
 			{
@@ -49,6 +48,8 @@ func initialModel(o *Options) model {
 			},
 		},
 	}
+	m.fields[0].Focus()
+	return m
 }
 
 // Run runs the setup process.

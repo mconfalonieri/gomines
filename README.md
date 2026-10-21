@@ -11,5 +11,3 @@ For now you need go:
 ```bash
 go install github.com/mconfalonieri/gomines@main
 ```
-
-

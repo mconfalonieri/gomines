@@ -3,11 +3,14 @@ package styles
 import (
 	"os"
 
+	"charm.land/bubbles/v2/textinput"
 	"charm.land/lipgloss/v2"
 	"charm.land/tone"
 )
 
 var (
+	TextInputStyles = textinput.Styles{}
+
 	Title       = lipgloss.Style{}
 	KeyChar     = lipgloss.Style{}
 	Prompt      = lipgloss.Style{}
@@ -34,6 +37,7 @@ var (
 
 func init() {
 	if lipgloss.HasDarkBackground(os.Stdin, os.Stdout) {
+		TextInputStyles = textinput.DefaultDarkStyles()
 		Title = lipgloss.NewStyle().
 			Foreground(tone.Citron).
 			Background(tone.Charple).
@@ -88,6 +92,7 @@ func init() {
 		MessageLost = lipgloss.NewStyle().
 			Foreground(tone.Salmon)
 	} else {
+		TextInputStyles = textinput.DefaultLightStyles()
 		Title = lipgloss.NewStyle().
 			Foreground(tone.Cumin).
 			Background(tone.Hazy).

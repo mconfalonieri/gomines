@@ -10,6 +10,13 @@ import (
 	"github.com/mconfalonieri/gomines/internal/pkg/styles"
 )
 
+var (
+	// Version compiled by goreleaser.
+	Version = "dev"
+	// Gitsha (commit SHA1) compiled by goreleaser.
+	Gitsha = "none"
+)
+
 // checkError checks if an error occurred. If err is not nil, it prints a
 // message and quits.
 func checkError(err error) {
@@ -44,6 +51,11 @@ func runProgram(o options) {
 }
 
 func main() {
+	if len(os.Args) == 2 && os.Args[1] == "-V" {
+		fmt.Printf("Gomines %s (SHA:%s)\n\n", Version, Gitsha)
+		os.Exit(0)
+	}
+
 	s := runSetup()
 
 	// Set the "font"

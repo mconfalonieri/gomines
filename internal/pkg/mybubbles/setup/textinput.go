@@ -33,11 +33,11 @@ const (
 func createPlayerNameTI() textinput.Model {
 	n := textinput.New()
 	n.Placeholder = defaultName
-	n.SetVirtualCursor(false)
-	n.Focus()
+	n.SetVirtualCursor(true)
 	n.CharLimit = nameFieldLength
 	n.SetWidth(nameFieldSize)
 	n.Prompt = styles.Prompt.Render(prompt)
+	n.SetStyles(styles.TextInputStyles)
 	return n
 }
 
@@ -45,11 +45,11 @@ func createPlayerNameTI() textinput.Model {
 func createSizeTI() textinput.Model {
 	n := textinput.New()
 	n.Placeholder = defaultSize
-	n.SetVirtualCursor(false)
-	n.Focus()
+	n.SetVirtualCursor(true)
 	n.CharLimit = sizeFieldLength
 	n.SetWidth(sizeFieldSize)
 	n.Prompt = styles.Prompt.Render(prompt)
+	n.SetStyles(styles.TextInputStyles)
 	return n
 }
 
@@ -57,11 +57,11 @@ func createSizeTI() textinput.Model {
 func createMineNumberTI() textinput.Model {
 	n := textinput.New()
 	n.Placeholder = defaultMines
-	n.SetVirtualCursor(false)
-	n.Focus()
+	n.SetVirtualCursor(true)
 	n.CharLimit = minesFieldLength
 	n.SetWidth(minesFieldSize)
 	n.Prompt = styles.Prompt.Render(prompt)
+	n.SetStyles(styles.TextInputStyles)
 	return n
 }
 
