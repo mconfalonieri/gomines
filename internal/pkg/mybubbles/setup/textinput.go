@@ -68,9 +68,9 @@ func createMineNumberTI() textinput.Model {
 func checkSize(_ Options, v string) error {
 	n, err := strconv.Atoi(v)
 	if err != nil {
-		return errors.New("this value is not an integer number.")
+		return errors.New("this value is not an integer number")
 	} else if n < sizeMinValue || sizeMaxValue > 100 {
-		return fmt.Errorf("this value must be beetween %d and %d.",
+		return fmt.Errorf("this value must be beetween %d and %d",
 			sizeMinValue, sizeMaxValue)
 	}
 	return nil
@@ -84,7 +84,7 @@ func checkMines(o Options, v string) error {
 	h, _ := strconv.Atoi(sh)
 	max := w*h - 1
 	if err != nil {
-		return errors.New("this value is not an integer number.")
+		return errors.New("this value is not an integer number")
 	} else if n < minesMinValue || n > max {
 		return fmt.Errorf("this value must be beetween %d and %d", minesMinValue, max)
 	}

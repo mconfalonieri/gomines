@@ -60,7 +60,9 @@ func main() {
 
 	// Set the "font"
 	if err := glyphs.SetDefault(s.GetGlyphSet()); err != nil {
-		glyphs.SetDefault(glyphs.ASCII)
+		if err := glyphs.SetDefault(glyphs.ASCII); err != nil {
+			panic("ERROR: cannot set a default glyph set.")
+		}
 	}
 
 	// Run the main program
