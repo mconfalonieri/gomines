@@ -19,39 +19,30 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
       - name: Git Fetch
         run: git fetch --force --tags
-
       - name: Setup go
         uses: actions/setup-go@v5
         with:
           go-version: '1.24'
-
       - name: Install AppImage dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y libfuse2t64 || sudo apt-get install -y libfuse2 || true
           sudo wget https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage -O /usr/local/bin/appimagetool
           sudo chmod +x /usr/local/bin/appimagetool
-
       - name: Run Unit Tests
         run: make unit-test
-
       - name: Cleanup for renovate
         if: startsWith(github.head_ref, 'renovate/')
         run: make renovate-fix
-
       - name: Save renovate changes
         if: startsWith(github.head_ref, 'renovate/')
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "Saving results of scripts/renovate_fix.sh"
-
       - name: Test build
         run: make build
-      - name: List
-        run: find .
       - name: Go Snapshot Release
         uses: goreleaser/goreleaser-action@v7
         with:
