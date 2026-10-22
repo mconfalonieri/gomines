@@ -37,7 +37,7 @@ archives:
       - goos: windows
         formats: [ 'zip' ]
 
-brews:
+homebrews:
   - name: gomines
     repository:
       owner: mconfalonieri
