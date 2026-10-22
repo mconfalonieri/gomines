@@ -20,7 +20,6 @@ builds:
     hooks:
       post:
         - cmd: ./scripts/build-appimage.sh {{ .Path }} {{ .Arch }} {{ .Version }}
-          dir: "{{ .dir }}"
           env:
             - GOOS={{ .Os }}
 
