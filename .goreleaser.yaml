@@ -36,7 +36,7 @@ archives:
       - goos: windows
         formats: [ 'zip' ]
 
-homebrews:
+homebrew_casks:
   - name: gomines
     repository:
       owner: mconfalonieri
@@ -46,8 +46,8 @@ homebrews:
     homepage: "https://github.com/mconfalonieri/gomines"
     description: "Minesweeper TUI application built with BubbleTea"
     license: "GPL-3.0"
-    install: |
-      bin.install "gomines"
+    binaries:
+      - gomines
 
 scoops:
   - name: gomines
