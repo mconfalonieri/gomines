@@ -22,7 +22,6 @@ type PlayField struct {
 	hiddenCells   int
 	VisibleField  [][]string
 	realField     *minefield.MineField
-	statusMsg     string
 }
 
 func New(w, h, m int) (PlayField, error) {
@@ -81,8 +80,8 @@ func (p *PlayField) play(x, y int, mark bool) bool {
 		p.updateStats()
 		return false
 	} else {
-		v := p.openCell(x, y)
-		if v == true {
+		isMine := p.openCell(x, y)
+		if isMine {
 			return true
 		}
 		s := xyStack{}

@@ -3,6 +3,7 @@ package setup
 import (
 	"fmt"
 
+	"charm.land/bubbles/v2/textinput"
 	tea "charm.land/bubbletea/v2"
 	"github.com/mconfalonieri/gomines/internal/pkg/styles"
 )
@@ -17,11 +18,13 @@ type model struct {
 
 // Next switches to the next field.
 func (s model) Next() (model, tea.Cmd) {
+	s.FocusedField().Blur()
 	focus := s.focused + 1
 	if focus == len(s.fields) {
 		return s, tea.Quit
 	}
 	s.focused = focus
+	s.FocusedField().Focus()
 	return s, nil
 }
 
@@ -32,13 +35,13 @@ func (s model) Select(i int) model {
 }
 
 // FocusedField returns the focused field.
-func (s model) FocusedField() field {
-	return s.fields[s.focused]
+func (s model) FocusedField() *field {
+	return &s.fields[s.focused]
 }
 
 // Init initializes the model.
 func (s model) Init() tea.Cmd {
-	return nil
+	return textinput.Blink
 }
 
 // SetError sets the error message.
@@ -91,7 +94,7 @@ func (s model) View() tea.View {
 	t := "\n" + styles.Title.Width(len(s.header())).Render("Gomines setup") + "\n"
 
 	t += s.header() + "\n\n"
-	t += componentView(s.FocusedField()) + "\n\n"
+	t += componentView(*s.FocusedField()) + "\n\n"
 	t += s.footer()
 
 	// Create a view

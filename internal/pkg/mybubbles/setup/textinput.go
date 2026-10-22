@@ -33,11 +33,11 @@ const (
 func createPlayerNameTI() textinput.Model {
 	n := textinput.New()
 	n.Placeholder = defaultName
-	n.SetVirtualCursor(false)
-	n.Focus()
+	n.SetVirtualCursor(true)
 	n.CharLimit = nameFieldLength
 	n.SetWidth(nameFieldSize)
 	n.Prompt = styles.Prompt.Render(prompt)
+	n.SetStyles(styles.TextInputStyles)
 	return n
 }
 
@@ -45,11 +45,11 @@ func createPlayerNameTI() textinput.Model {
 func createSizeTI() textinput.Model {
 	n := textinput.New()
 	n.Placeholder = defaultSize
-	n.SetVirtualCursor(false)
-	n.Focus()
+	n.SetVirtualCursor(true)
 	n.CharLimit = sizeFieldLength
 	n.SetWidth(sizeFieldSize)
 	n.Prompt = styles.Prompt.Render(prompt)
+	n.SetStyles(styles.TextInputStyles)
 	return n
 }
 
@@ -57,20 +57,20 @@ func createSizeTI() textinput.Model {
 func createMineNumberTI() textinput.Model {
 	n := textinput.New()
 	n.Placeholder = defaultMines
-	n.SetVirtualCursor(false)
-	n.Focus()
+	n.SetVirtualCursor(true)
 	n.CharLimit = minesFieldLength
 	n.SetWidth(minesFieldSize)
 	n.Prompt = styles.Prompt.Render(prompt)
+	n.SetStyles(styles.TextInputStyles)
 	return n
 }
 
 func checkSize(_ Options, v string) error {
 	n, err := strconv.Atoi(v)
 	if err != nil {
-		return errors.New("this value is not an integer number.")
+		return errors.New("this value is not an integer number")
 	} else if n < sizeMinValue || sizeMaxValue > 100 {
-		return fmt.Errorf("this value must be beetween %d and %d.",
+		return fmt.Errorf("this value must be beetween %d and %d",
 			sizeMinValue, sizeMaxValue)
 	}
 	return nil
@@ -84,7 +84,7 @@ func checkMines(o Options, v string) error {
 	h, _ := strconv.Atoi(sh)
 	max := w*h - 1
 	if err != nil {
-		return errors.New("this value is not an integer number.")
+		return errors.New("this value is not an integer number")
 	} else if n < minesMinValue || n > max {
 		return fmt.Errorf("this value must be beetween %d and %d", minesMinValue, max)
 	}

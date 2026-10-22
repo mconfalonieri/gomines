@@ -4,24 +4,33 @@ on:
   push:
     branches:
       - main
+
+env:
+  # Instructs appimagetool (which is an AppImage itself) to extract and run without requiring FUSE inside CI
+  APPIMAGE_EXTRACT_AND_RUN: "1"
+
 jobs:
   test-build:
-    runs-on: ubuntu-26.04
+    runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v7
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          # This checks out the source branch of the PR
-          ref: ${{ github.event.pull_request.head.ref }}
       - name: Git Fetch
         run: git fetch --force --tags
       - name: Setup go
-        uses: actions/setup-go@v7
+        uses: actions/setup-go@v5
         with:
-          go-version: '1.27'
+          go-version: '1.24'
+      - name: Install AppImage dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libfuse2t64 || sudo apt-get install -y libfuse2 || true
+          sudo wget https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage -O /usr/local/bin/appimagetool
+          sudo chmod +x /usr/local/bin/appimagetool
       - name: Run Unit Tests
         run: make unit-test
       - name: Cleanup for renovate
@@ -34,3 +43,9 @@ jobs:
           commit_message: "Saving results of scripts/renovate_fix.sh"
       - name: Test build
         run: make build
+      - name: Go Snapshot Release
+        uses: goreleaser/goreleaser-action@v7
+        with:
+          distribution: goreleaser
+          version: ~> v2
+          args: release --snapshot --clean --skip=publish

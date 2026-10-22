@@ -129,7 +129,6 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.restart = true
 				return m, tea.Quit
 			}
-
 		}
 	}
 	if !m.dead && !m.won {

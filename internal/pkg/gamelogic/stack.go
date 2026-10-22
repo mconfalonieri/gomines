@@ -7,11 +7,6 @@ type xy struct {
 
 type xyStack []xy
 
-func (s xyStack) peek() xy {
-	cur := len(s) - 1
-	return s[cur]
-}
-
 func (s *xyStack) push(e xy) {
 	n := append(*s, e)
 	*s = n

@@ -1,0 +1,82 @@
+project_name: gomines
+version: 2
+
+before:
+  hooks:
+    - scripts/release_precheck.sh
+
+builds:
+  - main: ./cmd/gomines
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -X 'main.Version={{.Version}}'
+      - -X 'main.Gitsha={{.ShortCommit}}'
+    hooks:
+      post:
+        - cmd: ./scripts/build_appimage.sh {{ .Path }} {{ .Arch }} {{ .Version }}
+          env:
+            - GOOS={{ .Os }}
+
+archives:
+  - formats: [ 'tar.gz' ]
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    format_overrides:
+      - goos: windows
+        formats: [ 'zip' ]
+
+homebrew_casks:
+  - name: gomines
+    repository:
+      owner: mconfalonieri
+      name: homebrew-tap
+      token: "{{ .Env.TAP_GITHUB_TOKEN }}"
+    directory: Formula
+    homepage: "https://github.com/mconfalonieri/gomines"
+    description: "Minesweeper TUI application built with BubbleTea"
+    license: "GPL-3.0"
+    binaries:
+      - gomines
+
+scoops:
+  - name: gomines
+    repository:
+      owner: mconfalonieri
+      name: scoop-bucket
+      token: "{{ .Env.TAP_GITHUB_TOKEN }}"
+    homepage: "https://github.com/mconfalonieri/gomines"
+    description: "Minesweeper TUI application built with BubbleTea"
+    license: "GPL-3.0"
+
+release:
+  github:
+    owner: mconfalonieri
+    name: gomines
+  extra_files:
+    - glob: "./dist/*.AppImage"
+
+checksum:
+  disable: false
+  name_template: "{{ .ProjectName }}_{{ .Version }}_checksums.txt"
+
+snapshot:
+  version_template: "{{ incpatch .Version }}-next"
+
+changelog:
+  use: github
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
