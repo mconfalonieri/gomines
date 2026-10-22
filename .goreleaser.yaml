@@ -19,9 +19,7 @@ builds:
       - -X 'main.Gitsha={{.ShortCommit}}'
     hooks:
       post:
-        - cmd: ./scripts/build_appimage.sh {{ .Path }} {{ .Arch }} {{ .Version }}
-          env:
-            - GOOS={{ .Os }}
+        - cmd: ./scripts/build_appimage.sh {{ .Path }} {{ .Arch }} {{ .Version }} {{ .Os }}
 
 archives:
   - formats: [ 'tar.gz' ]
