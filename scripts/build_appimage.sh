@@ -2,15 +2,20 @@
 set -e
 
 # Run only during Linux builds
-if [ "$GOOS" != "linux" ]; then
+if [ "$4" != "linux" ]; then
   exit 0
 fi
+
+
+# Ensure each parallel run has an isolated workspace to avoid "Text file busy"
+export TMPDIR=$(mktemp -d)
+trap 'rm -rf "$TMPDIR"' EXIT
 
 BINARY_PATH=$1  # Target binary built by GoReleaser
 ARCH=$2         # amd64 or arm64
 VERSION=$3
 
-APP_DIR="dist/gomines.AppDir"
+APP_DIR="dist/gomines-${ARCH}.AppDir"
 mkdir -p "$APP_DIR/usr/bin"
 mkdir -p "$APP_DIR/usr/share/icons/hicolor/256x256/apps"
 
