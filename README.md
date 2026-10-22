@@ -13,7 +13,7 @@ Make sure to have **Go 1.24+** and `$GOPATH/bin` in your `PATH`.
 Run:
 
 ```bash
-go install [github.com/mconfalonieri/gomines/cmd/gomines@latest](https://github.com/mconfalonieri/gomines/cmd/gomines@latest)
+go install github.com/mconfalonieri/gomines/cmd/gomines@latest
 ```
 
 ## Linux (AppImage)
