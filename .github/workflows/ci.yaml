@@ -41,6 +41,11 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "Saving results of scripts/renovate_fix.sh"
+      - name: Test token
+        run: |
+          curl -H "Authorization: Bearer $TAP_GITHUB_TOKEN" https://api.github.com/repos/mconfalonieri/homebrew-tap
+        env:
+          TAP_GITHUB_TOKEN: ${{ secrets.TAP_GITHUB_TOKEN }}
       - name: Test build
         run: make build
       - name: Go Snapshot Release
