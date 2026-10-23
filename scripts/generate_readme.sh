@@ -3,8 +3,13 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-# The version number passed from GoReleaser (e.g., v1.2.3)
+# The version number needs to be passed
 VERSION=$1
+
+if [ -z "$VERSION" ]; then
+    echo "Missing version parameter"
+    exit 1
+fi
 
 # The template file
 TEMPLATE_FILE="README.tmpl.md"

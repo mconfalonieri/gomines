@@ -150,16 +150,16 @@ func (m model) footer() string {
 	return fmt.Sprint(
 		"Press ", styles.KeyChar.Render("Esc"), " to exit, ",
 		styles.KeyChar.Render("Enter"), " to show a cell, ",
-		styles.KeyChar.Render("Space"), ", ", styles.KeyChar.Render("F"),
+		styles.KeyChar.Render("space"), ", ", styles.KeyChar.Render("F"),
 		": to mark/unmark a mine.\nMove around using ",
 		styles.KeyChar.Render(glyphs.GetKey(glyphs.KeyLeft)), ", ",
 		styles.KeyChar.Render(glyphs.GetKey(glyphs.KeyDown)), ", ",
 		styles.KeyChar.Render(glyphs.GetKey(glyphs.KeyUp)), ", ",
 		styles.KeyChar.Render(glyphs.GetKey(glyphs.KeyRight)), " or ",
-		styles.KeyChar.Render("h"), ", ",
-		styles.KeyChar.Render("j"), ", ",
-		styles.KeyChar.Render("k"), ", ",
-		styles.KeyChar.Render("l"), ".",
+		styles.KeyChar.Render("H"), ", ",
+		styles.KeyChar.Render("J"), ", ",
+		styles.KeyChar.Render("K"), ", ",
+		styles.KeyChar.Render("L"), ".",
 	)
 }
 

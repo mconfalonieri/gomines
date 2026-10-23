@@ -2,6 +2,10 @@
 
 A little minesweeper game written in Go to play around the [BubbleTea](https://charm.land/libs/) framework.
 
+
+> [!NOTE]
+> The latest version is **v0.1.0**.
+
 ![gomines screenshot](img/gomines.png)
 
 ## Quickstart
@@ -23,12 +27,12 @@ Download the [latest](https://github.com/mconfalonieri/gomines/releases/latest) 
 If you have an AppImage manager, use it. Otherwise, an AppImage is basically a wrapped executable with everything required to run the program, so run:
 
 ```bash
-mv gomines_YOUR_VERSION_linux_amd64.AppImage gomines
+mv gomines_v0.1.0_linux_amd64.AppImage gomines
 
 chmod +x gomines
 ```
 
-Making sure to substitute YOUR_VERSION with the version you downloaded.
+Make sure to use the correct architecture suffix: **amd64** or **arm64**.
 
 ### ✱ Gomines ✱
 
@@ -57,10 +61,10 @@ The following keys can be used to interact while in game mode:
 
 | Key      | Description        |
 | -------- | ------------------ |
-| `←`, `h` | Move left          |
-| `↓`, `j` | Move down          |
-| `↑`, `k` | Move up            |
-| `→`, `k` | Move right         |
+| `←`, `H` | Move left          |
+| `↓`, `J` | Move down          |
+| `↑`, `K` | Move up            |
+| `→`, `L` | Move right         |
 | `space`  | Mark/unmark a cell |
 | `Enter`  | Reveal a cell      |
 | `Esc`    | Exit the game      |
