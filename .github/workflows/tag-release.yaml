@@ -1,0 +1,30 @@
+name: Auto-Tag Release
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  tag:
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create and Push Tag
+        run: |
+          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          TAG_NAME="${BRANCH_NAME#release/}"
+          
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
+          # Use GITHUB_TOKEN to push the tag
+          git push origin "$TAG_NAME"
