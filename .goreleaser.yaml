@@ -47,16 +47,6 @@ homebrew_casks:
     binaries:
       - gomines
 
-scoops:
-  - name: gomines
-    repository:
-      owner: mconfalonieri
-      name: scoop-bucket
-      token: "{{ .Env.TAP_GITHUB_TOKEN }}"
-    homepage: "https://github.com/mconfalonieri/gomines"
-    description: "Minesweeper TUI application built with BubbleTea"
-    license: "GPL-3.0"
-
 release:
   github:
     owner: mconfalonieri
