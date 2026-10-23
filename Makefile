@@ -63,6 +63,11 @@ run: build ## Run the binary on local machine
 run-mono: build ## Run the binary on local machine in monochrome mode
 	NO_COLOR=1 build/bin/$(ARTIFACT_NAME)
 
+
+.PHONY: renovate-fix
+renovate-fix: # Fix for renovate
+	scripts/renovate_fix.sh
+
 .PHONY: all
 all: unit-test build ## Run the unit tests and build the binaries
 
