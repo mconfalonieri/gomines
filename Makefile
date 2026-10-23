@@ -12,7 +12,7 @@ endif
 
 # Variables
 ARTIFACT_NAME = gomines
-VERSION       =`git describe --tags --abbrev=0`
+VERSION       =`git describe --tags --abbrev=0 --match 'v[0-9]*.[0-9]*.[0-9]*'`
 
 ##@ General
 
@@ -22,8 +22,29 @@ help: ## Display this help.
 
 show: ## Show variables
 	@echo "\n\033[1mVariables\033[0m"
-	@echo "\033[36m  ARTIFACT_NAME\033[0m $(ARTIFACT_NAME)"
-	@echo "\033[36m  VERSION\033[0m $(VERSION)"
+	@echo "\033[36m  ARTIFACT_NAME\033[0m = (ARTIFACT_NAME)"
+	@echo "\033[36m  VERSION\033[0m       = $(VERSION)"
+
+.PHONY: major-release
+major-release: ## Prepare a major release
+	./scripts/prepare_release.sh major
+
+.PHONY: minor-release
+minor-release: ## Prepare a minor release
+	./scripts/prepare_release.sh minor
+
+.PHONY: patch-release
+patch-release: ## Prepare a patch release
+	./scripts/prepare_release.sh patch
+
+##@ Documentation
+
+README.md: README.tmpl.md
+	./scripts/generate_readme.sh $(VERSION)
+
+.PHONY: generate-readme
+generate-readme: ## Generate the README.md file
+	./scripts/generate_readme.sh $(VERSION)
 
 ##@ Code analysis
 
@@ -41,7 +62,7 @@ lint: ## Run golangci-lint against code.
 	go run $(GO_LINT) run --timeout 2m
 
 .PHONY: static-analysis
-static-analysis: lint vet ## Run static analysis against code.
+static-analysis: lint vet fmt ## Run static analysis against code.
 
 ##@ GO
 

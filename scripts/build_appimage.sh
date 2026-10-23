@@ -6,7 +6,6 @@ if [ "$4" != "linux" ]; then
   exit 0
 fi
 
-
 # Ensure each parallel run has an isolated workspace to avoid "Text file busy"
 export TMPDIR=$(mktemp -d)
 trap 'rm -rf "$TMPDIR"' EXIT
