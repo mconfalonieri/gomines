@@ -53,6 +53,7 @@ release:
     name: gomines
   extra_files:
     - glob: "./dist/*.AppImage"
+    - glob: "./dist/*.AppImage.zsync"
 
 checksum:
   disable: false
