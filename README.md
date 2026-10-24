@@ -8,11 +8,22 @@ A little minesweeper game written in Go to play around the [BubbleTea](https://c
 
 ![gomines screenshot](img/gomines.png)
 
-## 🚀 Quickstart
+## 🖥️ Installation
 
-### From the sources(Go)
 
-Make sure to have **Go 1.24+** and `$GOPATH/bin` in your `PATH`.
+### Sources
+
+You can compile Gomines from the sources with:
+
+```bash
+make build
+```
+
+The binary file will be in `build/bin`.
+
+### Go (all platforms)
+
+Make sure to have a proper Go installation and `$GOPATH/bin` in your `PATH`.
 
 Run:
 
@@ -20,7 +31,7 @@ Run:
 go install github.com/mconfalonieri/gomines/cmd/gomines@latest
 ```
 
-## Linux (AppImage)
+### AppImage (Linux)
 
 Download the [latest](https://github.com/mconfalonieri/gomines/releases/latest) AppImage file specific for your architecture (amd64 or arm64).
 
@@ -33,6 +44,33 @@ chmod +x gomines
 ```
 
 Make sure to use the correct architecture suffix: **amd64** or **arm64**.
+
+### Homebrew (Linux and MacOS X)
+
+Make sure you have [Homebrew](https://brew.sh/) properly set up.
+
+You can install Gomines with this command:
+
+```bash
+brew install mconfalonieri/tap/gomines
+```
+
+Or, if you prefer better control:
+
+```bash
+# Tap the repository
+brew tap mconfalonieri/tap
+
+# Install Gomines
+brew install gomines
+```
+
+### Windows
+
+For now the options are:
+
+1. Install the unsigned executable from the latest release
+2. Use WSL and check the linux instructions
 
 ## 🎮 Guide
 
