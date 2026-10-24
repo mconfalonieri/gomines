@@ -44,14 +44,13 @@ if [[ "$NEXT_TAG" == ERROR* ]]; then
     print_usage
     exit 1
 fi
-echo $NEXT_TAG
+
+COMMIT_TITLE="💾 Preparing release $NEXT_TAG"
+COMMIT_BODY="Automated release preparation to $NEXT_TAG."
 
 git checkout -b release/$NEXT_TAG
-./script/generate_readme.md $NEXT_TAG
-git add README.md
-git add version.txt
-git commit -a -m \"💾 Prepare release $NEXT_TAG\"
+./script/generate_readme.sh $NEXT_TAG
+git commit -a -m "$COMMIT_TITLE" -m "$COMMIT_BODY"
 git push --set-upstream origin release/$NEXT_TAG
-git checkout main
 echo The release/$NEXT_TAG is ready. You can open a pull request on GitHub.
 
