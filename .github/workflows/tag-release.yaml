@@ -14,9 +14,12 @@ jobs:
       contents: write
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
+      - name: Checkout Code
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Git Fetch
+        run: git fetch --force --tags
       - name: Create and Push Tag
         run: |
           BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
@@ -28,3 +31,26 @@ jobs:
           git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
           # Use GITHUB_TOKEN to push the tag
           git push origin "$TAG_NAME"
+      - name: Setup go
+        uses: actions/setup-go@v7
+        with:
+          go-version: '1.27'
+      - name: Install AppImage dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libfuse2t64 || sudo apt-get install -y libfuse2 || true
+          sudo wget https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage -O /usr/local/bin/appimagetool
+          sudo chmod +x /usr/local/bin/appimagetool
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v4
+        with:
+          platforms: 'linux/amd64,linux/arm64'
+      - name: Release with Goreleaser
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          distribution: goreleaser
+          version: ~> v2
+          args: release --clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAP_GITHUB_TOKEN: ${{ secrets.TAP_GITHUB_TOKEN }}
