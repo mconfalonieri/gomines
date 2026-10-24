@@ -1,4 +1,4 @@
-# gomines
+# ✱ Gomines ✱
 
 A little minesweeper game written in Go to play around the [BubbleTea](https://charm.land/libs/) framework.
 
@@ -8,7 +8,7 @@ A little minesweeper game written in Go to play around the [BubbleTea](https://c
 
 ![gomines screenshot](img/gomines.png)
 
-## Quickstart
+## 🚀 Quickstart
 
 ### From the sources(Go)
 
@@ -34,9 +34,9 @@ chmod +x gomines
 
 Make sure to use the correct architecture suffix: **amd64** or **arm64**.
 
-### ✱ Gomines ✱
+## 🎮 Guide
 
-#### Setup
+### Setup
 
 Once you launch the game, it will ask you some questions. You can just accept
 the default value by pressing `Enter` and it is always possible to exit by
@@ -48,7 +48,7 @@ pressing `Esc`.
 4. The number of mines (default: 10 cells)
 5. The type of glyphs to use: Unicode or ASCII (default: Unicode)
 
-#### The game
+### The game
 
 The goal is to mark all the cells containing mines and to open all hidden cells that don't contain a mine.
 The status bar below indicates:
