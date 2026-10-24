@@ -34,7 +34,7 @@ chmod +x gomines
 
 Make sure to use the correct architecture suffix: **amd64** or **arm64**.
 
-## 🎮 ✱ Gomines ✱
+## 🎮 Gomines ✱
 
 ### Setup
 
