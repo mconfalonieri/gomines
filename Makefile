@@ -45,8 +45,7 @@ README.md: README.tmpl.md
 	./scripts/generate_readme.sh $(VERSION)
 
 .PHONY: generate-readme
-generate-readme: ## Generate the README.md file
-	./scripts/generate_readme.sh $(VERSION)
+generate-readme: README.md ## Generate the README.md file
 
 ##@ Code analysis
 
