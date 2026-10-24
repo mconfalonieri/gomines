@@ -6,28 +6,33 @@ if [ "$4" != "linux" ]; then
   exit 0
 fi
 
-mkdir -p dist; cd dist
-
-# Ensure each parallel run has an isolated workspace to avoid "Text file busy"
-export TMPDIR=$(mktemp -d)
-trap 'fusermount -u "$TMPDIR"/.mount_* 2>/dev/null || umount -l "$TMPDIR"/.mount_* 2>/dev/null || true; rm -rf "$TMPDIR"; cd ..' EXIT
-
-BINARY_PATH=$1  # Target binary built by GoReleaser
+BINARY_PATH=$1  # Target binary built by GoReleaser (absolute or relative)
 ARCH=$2         # amd64 or arm64
 VERSION=$3
 
-APP_DIR="gomines-${ARCH}.AppDir"
+# Ensure output directory exists
+mkdir -p dist
+
+# Temporary build workspace
+APP_DIR="dist/gomines-${ARCH}.AppDir"
 RDNS_NAME="com.github.mconfalonieri.gomines"
 
 rm -rf "$APP_DIR"
 
-mkdir -p "$APP_DIR/usr/bin"
-mkdir -p "$APP_DIR/usr/share/icons/hicolor/256x256/apps"
+# Ensure each parallel run has an isolated workspace for appimagetool mounts
+export TMPDIR=$(mktemp -d)
+trap 'fusermount -u "$TMPDIR"/.mount_* 2>/dev/null || umount -l "$TMPDIR"/.mount_* 2>/dev/null || true; rm -rf "$TMPDIR"' EXIT
 
-cp "../$BINARY_PATH" "$APP_DIR/usr/bin/gomines"
-cp "../img/gomines-icon.png" "$APP_DIR/gomines.png"
-cp "../img/gomines-icon.png" "$APP_DIR/.DirIcon"
-cp "../img/gomines-icon.png" "$APP_DIR/usr/share/icons/hicolor/256x256/apps/${RDNS_NAME}.png"
+mkdir -p "$APP_DIR/usr/bin"
+mkdir -p "$APP_DIR/usr/share/applications"
+mkdir -p "$APP_DIR/usr/share/icons/hicolor/256x256/apps"
+mkdir -p "$APP_DIR/usr/share/metainfo"
+
+# Copy binary and icons
+cp "$BINARY_PATH" "$APP_DIR/usr/bin/gomines"
+cp "img/gomines-icon.png" "$APP_DIR/${RDNS_NAME}.png"
+cp "img/gomines-icon.png" "$APP_DIR/.DirIcon"
+cp "img/gomines-icon.png" "$APP_DIR/usr/share/icons/hicolor/256x256/apps/${RDNS_NAME}.png"
 
 # AppRun entrypoint
 cat << 'EOF' > "$APP_DIR/AppRun"
@@ -36,23 +41,22 @@ exec "$APPDIR/usr/bin/gomines" "$@"
 EOF
 chmod +x "$APP_DIR/AppRun"
 
-mkdir -p "$APP_DIR/usr/share/applications/"
 # Desktop entry
 cat << EOF > "$APP_DIR/usr/share/applications/${RDNS_NAME}.desktop"
 [Desktop Entry]
 Name=gomines
 Exec=gomines
-Icon=gomines
+Icon=${RDNS_NAME}
 Type=Application
 Categories=Game;
 Terminal=true
 X-AppImage-Version=${VERSION}
 EOF
 
+# Symlink desktop file at the AppDir root
 ln -sr "$APP_DIR/usr/share/applications/${RDNS_NAME}.desktop" "$APP_DIR/${RDNS_NAME}.desktop"
 
 # AppStream Metadata
-mkdir -p "$APP_DIR/usr/share/metainfo"
 cat << EOF > "$APP_DIR/usr/share/metainfo/${RDNS_NAME}.appdata.xml"
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
@@ -60,7 +64,7 @@ cat << EOF > "$APP_DIR/usr/share/metainfo/${RDNS_NAME}.appdata.xml"
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
   <name>Gomines</name>
-  <summary>A Minesweeper game written in Go</summary>
+  <summary>A minesweeper game written in Go</summary>
   <developer id="@f00l@mastodon.bida.im">
     <name>Marco Confalonieri</name>
   </developer>
@@ -89,5 +93,10 @@ EOF
 # Update information
 UPDATE_INFO="gh-releases-zsync|mconfalonieri|gomines|latest|gomines_*_linux_${ARCH}.AppImage.zsync"
 
-# Package AppImage using appimagetool
-ARCH=$ARCH appimagetool -u "$UPDATE_INFO" "$APP_DIR" "gomines_${VERSION}_linux_${ARCH}.AppImage"
+# Package AppImage inside dist directory
+PROJECT_ROOT=$(pwd)
+cd dist
+
+ARCH=$ARCH appimagetool -u "$UPDATE_INFO" "gomines-${ARCH}.AppDir" "gomines_${VERSION}_linux_${ARCH}.AppImage"
+
+cd "$PROJECT_ROOT"
