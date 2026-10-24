@@ -1,19 +1,18 @@
-name: Release on tag
+name: Auto-Tag Release
 
 on:
-  push:
-    tags:
-      - v*
-
-env:
-  # Allows appimagetool to extract and run without requiring FUSE inside CI containers
-  APPIMAGE_EXTRACT_AND_RUN: "1"
+  pull_request:
+    types: [closed]
+    branches:
+      - main
 
 jobs:
-  release:
+  tag:
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/v')
     runs-on: ubuntu-latest
     permissions:
       contents: write
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v7
@@ -21,6 +20,17 @@ jobs:
           fetch-depth: 0
       - name: Git Fetch
         run: git fetch --force --tags
+      - name: Create and Push Tag
+        run: |
+          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          TAG_NAME="${BRANCH_NAME#release/}"
+          
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
+          # Use GITHUB_TOKEN to push the tag
+          git push origin "$TAG_NAME"
       - name: Setup go
         uses: actions/setup-go@v7
         with:

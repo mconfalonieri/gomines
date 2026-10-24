@@ -27,7 +27,7 @@ Download the [latest](https://github.com/mconfalonieri/gomines/releases/latest) 
 If you have an AppImage manager, use it. Otherwise, an AppImage is basically a wrapped executable with everything required to run the program, so run:
 
 ```bash
-mv gomines_{{ .Version }}_linux_amd64.AppImage gomines
+mv gomines_{{ .CleanVersion }}_linux_amd64.AppImage gomines
 
 chmod +x gomines
 ```

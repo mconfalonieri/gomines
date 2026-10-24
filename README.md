@@ -27,7 +27,7 @@ Download the [latest](https://github.com/mconfalonieri/gomines/releases/latest) 
 If you have an AppImage manager, use it. Otherwise, an AppImage is basically a wrapped executable with everything required to run the program, so run:
 
 ```bash
-mv gomines_v0.1.0_linux_amd64.AppImage gomines
+mv gomines_0.1.0_linux_amd64.AppImage gomines
 
 chmod +x gomines
 ```
@@ -59,15 +59,15 @@ The status bar below indicates:
 
 The following keys can be used to interact while in game mode:
 
-| Key      | Description        |
-| -------- | ------------------ |
-| `←`, `H` | Move left          |
-| `↓`, `J` | Move down          |
-| `↑`, `K` | Move up            |
-| `→`, `L` | Move right         |
-| `space`  | Mark/unmark a cell |
-| `Enter`  | Reveal a cell      |
-| `Esc`    | Exit the game      |
+| Key          | Description        |
+| ------------ | ------------------ |
+| `←`, `H`     | Move left          |
+| `↓`, `J`     | Move down          |
+| `↑`, `K`     | Move up            |
+| `→`, `L`     | Move right         |
+| `space`, `F` | Mark/unmark a cell |
+| `Enter`      | Reveal a cell      |
+| `Esc`        | Exit the game      |
 
 The cells can have the following symbols. Some symbols are available only in specific phases:
 

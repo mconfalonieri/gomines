@@ -48,6 +48,8 @@ echo $NEXT_TAG
 
 git checkout -b release/$NEXT_TAG
 ./script/generate_readme.md $NEXT_TAG
+git add README.md
+git add version.txt
 git commit -a -m \"💾 Prepare release $NEXT_TAG\"
 git push --set-upstream origin release/$NEXT_TAG
 git checkout main
