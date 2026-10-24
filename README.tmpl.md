@@ -8,7 +8,7 @@ A little minesweeper game written in Go to play around the [BubbleTea](https://c
 
 ![gomines screenshot](img/gomines.png)
 
-## 🚀 Quickstart
+## 🖥️ Installation
 
 
 ### Sources
