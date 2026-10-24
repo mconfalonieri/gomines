@@ -1,4 +1,4 @@
-# gomines
+# ✱ Gomines ✱
 
 A little minesweeper game written in Go to play around the [BubbleTea](https://charm.land/libs/) framework.
 
@@ -34,7 +34,7 @@ chmod +x gomines
 
 Make sure to use the correct architecture suffix: **amd64** or **arm64**.
 
-## 🎮 Gomines ✱
+## 🎮 Guide
 
 ### Setup
 
