@@ -4,7 +4,7 @@ A little minesweeper game written in Go to play around the [BubbleTea](https://c
 
 
 > [!NOTE]
-> The latest version is **v0.1.1**.
+> The latest version is **v0.2.0**.
 
 ![gomines screenshot](img/gomines.png)
 
@@ -38,7 +38,7 @@ Download the [latest](https://github.com/mconfalonieri/gomines/releases/latest) 
 If you have an AppImage manager, use it. Otherwise, an AppImage is basically a wrapped executable with everything required to run the program, so run:
 
 ```bash
-mv gomines_0.1.1_linux_amd64.AppImage gomines
+mv gomines_0.2.0_linux_amd64.AppImage gomines
 
 chmod +x gomines
 ```
