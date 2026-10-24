@@ -22,7 +22,7 @@ help: ## Display this help.
 
 show: ## Show variables
 	@echo "\n\033[1mVariables\033[0m"
-	@echo "\033[36m  ARTIFACT_NAME\033[0m = (ARTIFACT_NAME)"
+	@echo "\033[36m  ARTIFACT_NAME\033[0m = $(ARTIFACT_NAME)"
 	@echo "\033[36m  VERSION\033[0m       = $(VERSION)"
 
 ##@ Release control
