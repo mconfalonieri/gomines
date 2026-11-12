@@ -6,7 +6,7 @@ require (
 	charm.land/bubbles/v2 v2.2.1
 	charm.land/bubbletea/v2 v2.1.0
 	charm.land/lipgloss/v2 v2.0.6
-	charm.land/tone v0.1.0
+	charm.land/tone v0.2.0
 )
 
 require (
